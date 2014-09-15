@@ -34,4 +34,4 @@ class TrackView(View):
             m = Mail.objects.get(pk=request.GET.get('m'))
             m.status = 'R'
             m.save()
-        return HttpResponse('', content_type='application/image')
+        return HttpResponse('')
