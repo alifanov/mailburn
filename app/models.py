@@ -17,7 +17,6 @@ class Mail(models.Model):
 
     def send(self):
         t = self.text + '<img width="1" height="1" src="http://lab.mailburn.com/track.jpg?m={}" />'.format(self.pk)
-        t += '<img src="http://www.google-analytics.com/collect?v=1&tid=UA-54801682-1&cid={}&t=event&ec=email&ea=open&el=recipient_id&cs=newsletter&cm=email&cn=Campaign_Name" />'.format(self.pk)
         msg = EmailMessage(
             self.subject,
             t,
@@ -26,15 +25,6 @@ class Mail(models.Model):
         )
         msg.content_subtype = 'html'
         msg.send()
-        # msg = Message(
-        #     From='info@mailburn.com',
-        #     To=self.to
-        # )
-        # msg.Subject = self.subject
-        # msg.Html = self.text + '<img width="1" height="1" src="http://lab.mailburn.com/track.jpg?m={}" />'.format(self.pk)
-        #
-        # sender = Mailer('localhost')
-        # sender.send(msg)
 
     def __unicode__(self):
         return u'{}: {}'.format(self.to, self.subject)
