@@ -16,10 +16,11 @@ class Mail(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, verbose_name=u'Status', default='S')
 
     def send(self):
+        t = self.text + '<img width="1" height="1" src="http://lab.mailburn.com/track.jpg?m={}" />'.format(self.pk)
+        t += '<img src="http://www.google-analytics.com/collect?v=1&tid=UA-54801682-1&cid={}&t=event&ec=email&ea=open&el=recipient_id&cs=newsletter&cm=email&cn=Campaign_Name" />'.format(self.pk)
         msg = EmailMessage(
             self.subject,
-            self.text + '<img width="1" height="1" src="http://lab.mailburn.com/track.jpg?m={}" />'.format(self.pk),
-            self.text += '<img src="http://www.google-analytics.com/collect?v=1&tid=UA-54801682-1&cid={}&t=event&ec=email&ea=open&el=recipient_id&cs=newsletter&cm=email&cn=Campaign_Name" />'.format(self.pk),
+            t,
             'info@mailburn.com',
             to=[self.to,]
         )
