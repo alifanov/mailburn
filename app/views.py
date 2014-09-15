@@ -1,6 +1,7 @@
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required, permission_required
+from django.http import HttpResponse
 from app.models import *
 from app.forms import *
 # Create your views here.
@@ -26,3 +27,11 @@ class HomeView(ListView):
         ctx = super(HomeView, self).get_context_data(**kwargs)
         ctx['form'] = MailForm()
         return ctx
+
+class TrackView(View):
+    def get(self, request, *args, **kwargs):
+        if request.GET.get('m'):
+            m = Mail.objects.get(pk=request.GET.get('m'))
+            m.status = 'R'
+            m.save()
+        return HttpResponse('', content_type='application/image')
