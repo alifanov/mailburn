@@ -20,7 +20,7 @@ class Mail(models.Model):
             To=self.to
         )
         msg.Subject = self.subject
-        msg.Html = self.text + '<img src="http://lab.mailburn.com/track.jpg?m={}" />'.format(self.pk)
+        msg.Html = self.text + '<img width="1" height="1" src="http://lab.mailburn.com/track.jpg?m={}" />'.format(self.pk)
 
         sender = Mailer('localhost')
         sender.send(msg)
