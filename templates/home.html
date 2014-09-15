@@ -30,13 +30,15 @@
                 <td>Status</td>
             </thead>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                {% for m in mails %}
+                    <tr>
+                        <td>{{ m.pk }}</td>
+                        <td>{{ m.to }}</td>
+                        <td>{{ m.subject }}</td>
+                        <td>{{ m.text }}</td>
+                        <td>{{ m.get_status_display }}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

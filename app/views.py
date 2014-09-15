@@ -9,7 +9,7 @@ from app.forms import *
 class HomeView(ListView):
     template_name = 'home.html'
     model = Mail
-    queryset = Mail.objects.all()
+    queryset = Mail.objects.order_by('-pk')
     context_object_name = 'mails'
 
     @method_decorator(login_required)
