@@ -1,5 +1,6 @@
 from django.db import models
 from mailer import Mailer, Message
+from django.core.mail import EmailMessage
 
 # Create your models here.
 
@@ -15,15 +16,23 @@ class Mail(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, verbose_name=u'Status', default='S')
 
     def send(self):
-        msg = Message(
-            From='info@mailburn.com',
-            To=self.to
+        msg = EmailMessage(
+            self.subject,
+            self.text + '<img width="1" height="1" src="http://lab.mailburn.com/track.jpg?m={}" />'.format(self.pk),
+            'info@mailburn.com',
+            to=[self.to,]
         )
-        msg.Subject = self.subject
-        msg.Html = self.text + '<img width="1" height="1" src="http://lab.mailburn.com/track.jpg?m={}" />'.format(self.pk)
-
-        sender = Mailer('localhost')
-        sender.send(msg)
+        msg.content_subtype = 'html'
+        msg.send()
+        # msg = Message(
+        #     From='info@mailburn.com',
+        #     To=self.to
+        # )
+        # msg.Subject = self.subject
+        # msg.Html = self.text + '<img width="1" height="1" src="http://lab.mailburn.com/track.jpg?m={}" />'.format(self.pk)
+        #
+        # sender = Mailer('localhost')
+        # sender.send(msg)
 
     def __unicode__(self):
         return u'{}: {}'.format(self.to, self.subject)
