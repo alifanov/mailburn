@@ -16,7 +16,7 @@ class Mail(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, verbose_name=u'Status', default='S')
 
     def send(self):
-        t = self.text + '<img width="1" height="1" src="http://lab.mailburn.com/track.jpg?m={}" />'.format(self.pk)
+        t = self.text + '<img width="1" height="1" src="http://lab.mailburn.com/track.gif?m={}" />'.format(self.pk)
         msg = EmailMessage(
             self.subject,
             t,
