@@ -17,8 +17,7 @@ class Mail(models.Model):
     def send(self):
         msg = Message(
             From='info@mailburn.com',
-            To=self.to,
-            charset='utf-8'
+            To=self.to
         )
         msg.Subject = self.subject
         msg.Html = self.text + '<img src="http://lab.mailburn.com/track.jpg?m={}" />'.format(self.pk)
