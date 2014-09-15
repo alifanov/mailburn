@@ -34,4 +34,7 @@ class TrackView(View):
             m = Mail.objects.get(pk=request.GET.get('m'))
             m.status = 'R'
             m.save()
-        return HttpResponse('')
+        r = HttpResponse('')
+        r['Cache-Control'] = 'no-cache'
+        r['Content-Length'] = 0
+        return r
