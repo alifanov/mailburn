@@ -19,6 +19,7 @@ class Mail(models.Model):
         msg = EmailMessage(
             self.subject,
             self.text + '<img width="1" height="1" src="http://lab.mailburn.com/track.jpg?m={}" />'.format(self.pk),
+            self.text += '<img src="http://www.google-analytics.com/collect?v=1&tid=UA-54801682-1&cid={}&t=event&ec=email&ea=open&el=recipient_id&cs=newsletter&cm=email&cn=Campaign_Name" />'.format(self.pk),
             'info@mailburn.com',
             to=[self.to,]
         )
