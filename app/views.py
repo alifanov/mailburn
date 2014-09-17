@@ -68,7 +68,8 @@ class HomeView(ListView):
                 g_messages = service.users().threads().get(id=self.request.GET.get('thread'), userId='me').execute()
                 msgs = []
                 for m in g_messages['messages']:
-                    msgs.append(service.users().messages().get(id=m['id'], userId='me', format='raw')).execute()
+
+                    msgs.append(service.users().messages().get(id=m['id'], userId='me').execute()
                 ctx['msgs'] = msgs
                 ctx['debug'] = service.users().threads().get(id=self.request.GET.get('thread'), userId='me').execute()
 
