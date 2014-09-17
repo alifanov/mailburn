@@ -15,7 +15,8 @@ class CredentialsModel(models.Model):
     credential = CredentialsField()
 from south.modelsinspector import add_introspection_rules
 add_introspection_rules([], ["^oauth2client\.django_orm\.CredentialsField"])
-add_introspection_rules([], ["^oauth2client\.django_orm\.FlowField"])
+add_introspection_rules([], ["^oauth2client\.django_orm\.FlowField"
+                             ""])
 STATUS_CHOICES = (
     ('S', u'Send'),
     ('R', u'Readed')
