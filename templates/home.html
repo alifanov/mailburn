@@ -27,6 +27,7 @@
         </ul>
         {% if msgs %}
             <h4>Messages:</h4>
+            {{ msgs }}
             <ul>
                 {% for m in msgs.messages %}
                     <li>{{ m }}</li>
