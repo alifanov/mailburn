@@ -22,14 +22,16 @@
         <h4>Threads:</h4>
         <ul>
             {% for t in threads.threads %}
-                <li>{{ t.id }}</li>
+                <li>
+                    <a href="?thread={{ t.id }}">{{ t.id }}</a>
+                </li>
             {% endfor %}
         </ul>
         {% if msgs %}
             <h4>Messages:</h4>
             <ul>
                 {% for m in msgs %}
-                    <li>{{ m }}</li>
+                    <li>{{ m }} {{ m.headers.subject }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
