@@ -27,9 +27,8 @@
         </ul>
         {% if msgs %}
             <h4>Messages:</h4>
-            {{ msgs }}
             <ul>
-                {% for m in msgs.messages %}
+                {% for m in msgs %}
                     <li>{{ m }}</li>
                 {% endfor %}
             </ul>
