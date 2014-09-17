@@ -23,7 +23,11 @@ CLIENT_SECRETS = os.path.join(os.path.dirname(__file__), '..', 'client_secrets.j
 
 FLOW = flow_from_clientsecrets(
     CLIENT_SECRETS,
-    scope='https://www.googleapis.com/auth/plus.me',
+    scope=[
+        'https://www.googleapis.com/auth/plus.me',
+        'https://www.googleapis.com/auth/gmail.readonly',
+        'https://www.googleapis.com/auth/gmail.modify',
+    ],
     redirect_uri='http://lab.mailburn.com/oauth2callback')
 
 class HomeView(ListView):
@@ -56,8 +60,8 @@ class HomeView(ListView):
         else:
             http = httplib2.Http()
             http = credential.authorize(http)
-            service = build("plus", "v1", http=http)
-            ctx['debug'] = service
+            service = build("gmail", "v1", http=http)
+            ctx['debug'] = service.users().threads().list(userId='me').execute()
 
         # if self.request.user.social_auth.filter(provider='google-oauth2').exists():
         #     sa = self.request.user.social_auth.filter(provider='google-oauth2').all()[0]
