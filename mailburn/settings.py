@@ -39,13 +39,13 @@ INSTALLED_APPS = (
     'app',
     'south',
     'widget_tweaks',
-    'social.apps.django_app.default'
+    # 'social.apps.django_app.default'
 )
 
-AUTHENTICATION_BACKENDS = (
-    'social.backends.google.GoogleOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
-)
+# AUTHENTICATION_BACKENDS = (
+#     'social.backends.google.GoogleOAuth2',
+#     'django.contrib.auth.backends.ModelBackend',
+# )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
@@ -56,8 +56,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
-    'social.apps.django_app.context_processors.backends',
-    'social.apps.django_app.context_processors.login_redirect',
+    # 'social.apps.django_app.context_processors.backends',
+    # 'social.apps.django_app.context_processors.login_redirect',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -111,7 +111,8 @@ TEMPLATE_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/var/www/mailburn/media/'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '923434998-j6vt8v514ad09at62u3tjntrqilif1go.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '0t0x9vxFbZ7j1zg2rdobvJ04'
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['https://www.googleapis.com/auth/gmail.modify', 'https://www.googleapis.com/auth/gmail.readonly']
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '923434998-j6vt8v514ad09at62u3tjntrqilif1go.apps.googleusercontent.com'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '0t0x9vxFbZ7j1zg2rdobvJ04'
+#
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['https://www.googleapis.com/auth/gmail.modify', 'https://www.googleapis.com/auth/gmail.readonly']
+GOOGLE_OAUTH2_SECRET_KEY = '0t0x9vxFbZ7j1zg2rdobvJ04'
