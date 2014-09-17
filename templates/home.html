@@ -23,7 +23,7 @@
         <ul>
             {% for t in threads.threads %}
                 <li>
-                    <a href="?thread={{ t.id }}">{{ t.id }}</a>
+                    <a href="?thread={{ t.id }}">{{ t.id }} [{{ t.snippet }}]</a>
                 </li>
             {% endfor %}
         </ul>
