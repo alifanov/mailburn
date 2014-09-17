@@ -109,23 +109,14 @@ class ThreadsGet(View):
         if r.status_code == 200: return HttpResponse(json.dumps(r.json()['messages']), content_type='application/json')
         return HttpResponse('')
 
+class MessageSend(View):
     def post(self, request, *args, **kwargs):
+        p = {'access_token': request.GET.get('access_token')}
+        if request.GET.get('threadId'):
+            p['threadId'] = request.GET.get('threadId')
         r = requests.post('https://www.googleapis.com/gmail/v1/users/me/messages/send',
-                        params={
-                            'access_token': request.GET.get('access_token'),
-                            'threadId': kwargs.get('threadId')
-                        })
+                        params=p)
         if r.status_code == 200: return HttpResponse(json.dumps(r.json()['messages']), content_type='application/json')
-        return HttpResponse('')
-
-class MessageGet(View):
-    def get(self, request, *args, **kwargs):
-        r = requests.get('https://www.googleapis.com/gmail/v1/users/me/messages/{}'.format(kwargs.get('messageId')),
-                        params={
-                            'access_token': request.GET.get('access_token'),
-                            'format': 'raw'
-                        })
-        if r.status_code == 200: return HttpResponse(json.dumps(r.json()), content_type='application/json')
         return HttpResponse('')
 
 class TrackView(View):
