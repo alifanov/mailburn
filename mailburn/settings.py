@@ -115,4 +115,4 @@ MEDIA_ROOT = '/var/www/mailburn/media/'
 # SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '0t0x9vxFbZ7j1zg2rdobvJ04'
 #
 # SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['https://www.googleapis.com/auth/gmail.modify', 'https://www.googleapis.com/auth/gmail.readonly']
-GOOGLE_OAUTH2_SECRET_KEY = 'AIzaSyAtRz4x8pUSkq3BSWBPiG_qOHf99NKQBcw'
+# GOOGLE_OAUTH2_SECRET_KEY = 'AIzaSyAtRz4x8pUSkq3BSWBPiG_qOHf99NKQBcw'

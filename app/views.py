@@ -49,7 +49,7 @@ class HomeView(ListView):
         storage = Storage(CredentialsModel, 'id', self.request.user, 'credential')
         credential = storage.get()
         if credential is None or credential.invalid == True:
-            FLOW.params['state'] = xsrfutil.generate_token(settings.GOOGLE_OAUTH2_SECRET_KEY,
+            FLOW.params['state'] = xsrfutil.generate_token(settings.SECRET_KEY,
                                                            self.request.user)
             authorize_url = FLOW.step1_get_authorize_url()
             ctx['auth_url'] = authorize_url
