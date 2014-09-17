@@ -31,7 +31,7 @@
             <h4>Messages:</h4>
             <ul>
                 {% for m in msgs %}
-                    <li>{{ m }} {{ m.headers.subject }}</li>
+                    <li>{{ m.id }} {{ m.snippet }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
