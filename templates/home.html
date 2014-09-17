@@ -12,9 +12,17 @@
             {% endif %}
         </div>
 
+        <h4>Labels:</h4>
         <ul>
             {% for l in labels.labels %}
                 <li>[{{ l.id }}]: {{ l.name }}</li>
+            {% endfor %}
+        </ul>
+
+        <h4>Threads:</h4>
+        <ul>
+            {% for m in threads %}
+                <li>{{ m }}</li>
             {% endfor %}
         </ul>
 
