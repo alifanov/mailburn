@@ -25,6 +25,14 @@
                 <li>{{ t.id }}</li>
             {% endfor %}
         </ul>
+        {% if msgs %}
+            <h4>Messages:</h4>
+            <ul>
+                {% for m in msgs.messages %}
+                    <li>{{ m.id }} {{ m.raw }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 
         <div>
             <div>{{ request.user.first_name }} {{ request.user.last_name }}</div>
