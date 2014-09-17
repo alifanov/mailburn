@@ -63,7 +63,7 @@ class HomeView(ListView):
             http = credential.authorize(http)
             service = build("gmail", "v1", http=http)
             ctx['labels'] = service.users().labels().list(userId='me').execute()
-            ctx['threads'] = service.users().threads().list(userId='me', labelIds=['CATEGORY_PERSONAL', 'UNREAD']).execute()
+            ctx['threads'] = service.users().threads().list(userId='me', labelIds=['CATEGORY_PERSONAL']).execute()
             if self.request.GET.get('thread'):
                 g_messages = service.users().threads().get(id=self.request.GET.get('thread'), userId='me').execute()
                 msgs = []
