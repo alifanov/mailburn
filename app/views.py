@@ -100,6 +100,15 @@ class ThreadsList(View):
         if r.status_code == 200: return HttpResponse(json.dumps(r.json()), content_type='application/json')
         return HttpResponse('')
 
+class ThreadsGet(View):
+    def get(self, request, *args, **kwargs):
+        r = requests.get('https://www.googleapis.com/gmail/v1/users/me/threads/{}'.format(kwargs.get('threadId')),
+                        params={
+                            'access_token': request.GET.get('access_token')
+                        })
+        if r.status_code == 200: return HttpResponse(json.dumps(r.json()), content_type='application/json')
+        return HttpResponse('')
+
 class TrackView(View):
     def get(self, request, *args, **kwargs):
         if request.GET.get('m'):
