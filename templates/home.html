@@ -12,6 +12,12 @@
             {% endif %}
         </div>
 
+        <ul>
+            {% for l in lables.lables %}
+                <li>{{ l.name }}</li>
+            {% endfor %}
+        </ul>
+
         <div>
             <div>{{ request.user.first_name }} {{ request.user.last_name }}</div>
             <div>{{ debug }}</div>
