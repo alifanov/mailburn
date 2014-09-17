@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', HomeView.as_view(), name='home'),
     url(r'^track.gif$', TrackView.as_view(), name='track'),
+    url(r'^api/threads/list/$', ThreadsList.as_view(), name='api-threads-list'),
     # url(r'^oauth2callback$', auth_return, name='google-oauth2-return'),
     # url(r'^blog/', include('blog.urls')),
     url('', include('social.apps.django_app.urls', namespace='social')),

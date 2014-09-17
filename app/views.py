@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from app.models import *
 from app.forms import *
 import requests
-import os
+import os, json
 import httplib2
 
 from apiclient.discovery import build
@@ -90,6 +90,15 @@ def auth_return(request):
     storage = Storage(CredentialsModel, 'id', request.user, 'credential')
     storage.put(credential)
     return HttpResponseRedirect("/")
+
+class ThreadsList(View):
+    def get(self, request, *args, **kwargs):
+        r = requests.get('https://www.googleapis.com/gmail/v1/users/me/threads/',
+                        params={
+                            'access_token': request.GET.get('access_token')
+                        })
+        if r.status_code == 200: return HttpResponse(json.dumps(r.json()), content_type='application/json')
+        return HttpResponse('')
 
 class TrackView(View):
     def get(self, request, *args, **kwargs):
