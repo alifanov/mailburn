@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse
 from app.models import *
 from app.forms import *
+import requests
 # Create your views here.
 
 class HomeView(ListView):
@@ -26,6 +27,13 @@ class HomeView(ListView):
     def get_context_data(self, **kwargs):
         ctx = super(HomeView, self).get_context_data(**kwargs)
         ctx['form'] = MailForm()
+        if self.request.user.social_auth.filter(provider='google-oauth2').exists():
+            sa = self.request.user.social_auth.filter(provider='google-oauth2').all()[0]
+            auth_str = u'{} {}'.format(sa.extra_data['token_type'], sa.extra_data['access_token'])
+            DEV_KEY = 'AIzaSyCFj15TpkchL4OUhLD1Q2zgxQnMb7v3XaM'
+            r = requests.get('https://content.googleapis.com/gmail/v1/users/lifanov.a.v@gmail.com/threads?includeSpamTrash=false&key={}'.format(DEV_KEY),
+                             headers={'authorization': auth_str})
+            ctx['debug'] = u'{} {}'.format(r.status_code, r.json())
         return ctx
 
 class TrackView(View):

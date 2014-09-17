@@ -12,7 +12,7 @@
 
         <div>
             <div>{{ request.user.first_name }} {{ request.user.last_name }}</div>
-            <div></div>
+            <div>{{ debug }}</div>
         </div>
         <form method="POST">
             {% csrf_token %}
