@@ -51,26 +51,26 @@ class HomeView(ListView):
     def get_context_data(self, **kwargs):
         ctx = super(HomeView, self).get_context_data(**kwargs)
         ctx['form'] = MailForm()
-        storage = Storage(CredentialsModel, 'id', self.request.user, 'credential')
-        credential = storage.get()
-        if credential is None or credential.invalid == True:
-            FLOW.params['state'] = xsrfutil.generate_token(settings.SECRET_KEY,
-                                                           self.request.user)
-            authorize_url = FLOW.step1_get_authorize_url()
-            ctx['auth_url'] = authorize_url
-        else:
-            http = httplib2.Http()
-            http = credential.authorize(http)
-            service = build("gmail", "v1", http=http)
-            ctx['labels'] = service.users().labels().list(userId='me').execute()
-            ctx['threads'] = service.users().threads().list(userId='me', labelIds=['CATEGORY_PERSONAL']).execute()
-            if self.request.GET.get('thread'):
-                g_messages = service.users().threads().get(id=self.request.GET.get('thread'), userId='me').execute()
-                msgs = []
-                for m in g_messages['messages']:
-                    msgs.append(service.users().messages().get(id=m['id'], userId='me').execute())
-                ctx['msgs'] = msgs
-                ctx['debug'] = service.users().threads().get(id=self.request.GET.get('thread'), userId='me').execute()
+        # storage = Storage(CredentialsModel, 'id', self.request.user, 'credential')
+        # credential = storage.get()
+        # if credential is None or credential.invalid == True:
+        #     FLOW.params['state'] = xsrfutil.generate_token(settings.SECRET_KEY,
+        #                                                    self.request.user)
+        #     authorize_url = FLOW.step1_get_authorize_url()
+        #     ctx['auth_url'] = authorize_url
+        # else:
+        #     http = httplib2.Http()
+        #     http = credential.authorize(http)
+        #     service = build("gmail", "v1", http=http)
+        #     ctx['labels'] = service.users().labels().list(userId='me').execute()
+        #     ctx['threads'] = service.users().threads().list(userId='me', labelIds=['CATEGORY_PERSONAL']).execute()
+        #     if self.request.GET.get('thread'):
+        #         g_messages = service.users().threads().get(id=self.request.GET.get('thread'), userId='me').execute()
+        #         msgs = []
+        #         for m in g_messages['messages']:
+        #             msgs.append(service.users().messages().get(id=m['id'], userId='me').execute())
+        #         ctx['msgs'] = msgs
+        #         ctx['debug'] = service.users().threads().get(id=self.request.GET.get('thread'), userId='me').execute()
 
         # if self.request.user.social_auth.filter(provider='google-oauth2').exists():
         #     sa = self.request.user.social_auth.filter(provider='google-oauth2').all()[0]
