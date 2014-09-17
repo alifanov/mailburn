@@ -65,7 +65,7 @@ class HomeView(ListView):
             ctx['labels'] = service.users().labels().list(userId='me').execute()
             ctx['threads'] = service.users().threads().list(userId='me', labelIds=['CATEGORY_PERSONAL', 'UNREAD']).execute()
             if self.request.GET.get('thread'):
-                ctx['debug'] = service.users().threads().get(id=self.request.GET.get('thread')).execute()
+                ctx['debug'] = service.users().threads().get(id=self.request.GET.get('thread'), userId='me').execute()
 
         # if self.request.user.social_auth.filter(provider='google-oauth2').exists():
         #     sa = self.request.user.social_auth.filter(provider='google-oauth2').all()[0]
