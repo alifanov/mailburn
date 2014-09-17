@@ -63,7 +63,7 @@ class HomeView(ListView):
             http = credential.authorize(http)
             service = build("gmail", "v1", http=http)
             ctx['labels'] = service.users().labels().list(userId='me').execute()
-            ctx['debug'] = service.users().threads().list(userId='me', labelIds=['CATEGORY_PERSONAL', 'UNREAD']).execute()
+            ctx['threads'] = service.users().threads().list(userId='me', labelIds=['CATEGORY_PERSONAL', 'UNREAD']).execute()
 
         # if self.request.user.social_auth.filter(provider='google-oauth2').exists():
         #     sa = self.request.user.social_auth.filter(provider='google-oauth2').all()[0]
