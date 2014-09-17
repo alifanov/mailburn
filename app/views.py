@@ -52,7 +52,7 @@ class HomeView(ListView):
             FLOW.params['state'] = xsrfutil.generate_token(settings.GOOGLE_OAUTH2_SECRET_KEY,
                                                            self.request.user)
             authorize_url = FLOW.step1_get_authorize_url()
-            return HttpResponseRedirect(authorize_url)
+            ctx['auth_url'] = HttpResponseRedirect(authorize_url)
         else:
             http = httplib2.Http()
             http = credential.authorize(http)

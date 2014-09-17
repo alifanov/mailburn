@@ -6,9 +6,11 @@
     <div class="container">
         <h1>Mailburn</h1>
 
-{#        <div>#}
-{#            <a href="{% url 'social:begin' 'google-oauth2' %}">Log in with Google OAuth2</a>#}
-{#        </div>#}
+        <div>
+            {% if auth_url %}
+                <a href="{{ auth_url }}">Log in with Google OAuth2</a>
+            {% endif %}
+        </div>
 
         <div>
             <div>{{ request.user.first_name }} {{ request.user.last_name }}</div>
