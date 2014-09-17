@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^$', HomeView.as_view(), name='home'),
     url(r'^track.gif$', TrackView.as_view(), name='track'),
     # url(r'^blog/', include('blog.urls')),
+    url('', include('social.apps.django_app.urls', namespace='social')),
 
     url(r'^admin/', include(admin.site.urls)),
 )
