@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView, ListView, View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required, permission_required
+from django.views.decorators.csrf import csrf_exempt
 from app.models import *
 from app.forms import *
 import requests
@@ -115,6 +116,11 @@ class ThreadsGet(View):
         return HttpResponse('')
 
 class MessageSend(View):
+
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(MessageSend, self).dispatch(*args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         p = {'access_token': request.GET.get('access_token')}
         if request.GET.get('threadId'):
