@@ -133,7 +133,7 @@ class MessageSend(View):
 
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
-        return super(MessageSend, self).dispatch(*args, **kwargs)
+        return super(MessageSend, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         p = {'access_token': request.GET.get('access_token')}
