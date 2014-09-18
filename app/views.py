@@ -94,10 +94,17 @@ def auth_return(request):
 
 class ThreadsList(View):
     def get(self, request, *args, **kwargs):
+        params = {
+            'access_token': request.GET.get('access_token')
+        }
+        if request.GET.get('maxResults'):
+            params['maxResults'] = request.GET.get('maxResults')
+        if request.GET.get('pageToken'):
+            params['pageToken'] = request.GET.get('pageToken')
+        if request.GET.get('q'):
+            params['q'] = request.GET.get('q')
         r = requests.get('https://www.googleapis.com/gmail/v1/users/me/threads/',
-                        params={
-                            'access_token': request.GET.get('access_token')
-                        })
+                        params=params)
         if r.status_code == 200:
             return HttpResponse(json.dumps(r.json()['threads']), content_type='application/json')
         else:
@@ -106,10 +113,17 @@ class ThreadsList(View):
 
 class ThreadsGet(View):
     def get(self, request, *args, **kwargs):
+        params = {
+            'access_token': request.GET.get('access_token')
+        }
+        if request.GET.get('maxResults'):
+            params['maxResults'] = request.GET.get('maxResults')
+        if request.GET.get('pageToken'):
+            params['pageToken'] = request.GET.get('pageToken')
+        if request.GET.get('q'):
+            params['q'] = request.GET.get('q')
         r = requests.get('https://www.googleapis.com/gmail/v1/users/me/threads/{}'.format(kwargs.get('threadId')),
-                        params={
-                            'access_token': request.GET.get('access_token')
-                        })
+                        params=params)
         if r.status_code == 200: return HttpResponse(json.dumps(r.json()['messages']), content_type='application/json')
         else:
             return HttpResponse(r.text, content_type='application/json', status=r.status_code)
