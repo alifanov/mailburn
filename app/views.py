@@ -100,7 +100,7 @@ class ThreadsList(View):
         if r.status_code == 200:
             return HttpResponse(json.dumps(r.json()['threads']), content_type='application/json')
         else:
-            return HttpResponse(r.text, content_type='application/json')
+            return HttpResponse(r.text, content_type='application/json', status=r.status_code)
         return HttpResponse('')
 
 class ThreadsGet(View):
@@ -111,7 +111,7 @@ class ThreadsGet(View):
                         })
         if r.status_code == 200: return HttpResponse(json.dumps(r.json()['messages']), content_type='application/json')
         else:
-            return HttpResponse(r.text, content_type='application/json')
+            return HttpResponse(r.text, content_type='application/json', status=r.status_code)
         return HttpResponse('')
 
 class MessageSend(View):
