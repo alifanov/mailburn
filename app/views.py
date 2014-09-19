@@ -140,7 +140,7 @@ class MessageSend(View):
         if request.GET.get('threadId'):
             p['threadId'] = request.GET.get('threadId')
         r = requests.post('https://www.googleapis.com/upload/gmail/v1/users/me/messages/send',
-                        params=p, data=request.raw_post_data)
+                        params=p, data=request.body)
         if r.status_code == 200: return HttpResponse(json.dumps(r.json()['messages']), content_type='application/json')
         return HttpResponse('')
 
