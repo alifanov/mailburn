@@ -147,7 +147,8 @@ class MessageSend(View):
                 'Content-Type': 'application/json'
             })
         if r.status_code == 200: return HttpResponse(json.dumps(r.json()), content_type='application/json')
-        return HttpResponse('')
+        else:
+            return HttpResponse(r.text, content_type='application/json', status=r.status_code)
 
 class TrackView(View):
     def get(self, request, *args, **kwargs):
