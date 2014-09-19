@@ -146,7 +146,7 @@ class MessageSend(View):
                 'Authorization': request.META['HTTP_AUTHORIZATION'],
                 'Content-Type': 'application/json'
             })
-        if r.status_code == 200: return HttpResponse(json.dumps(r.json()['messages']), content_type='application/json')
+        if r.status_code == 200: return HttpResponse(json.dumps(r.json()), content_type='application/json')
         return HttpResponse('')
 
 class TrackView(View):
