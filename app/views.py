@@ -143,7 +143,7 @@ class MessageSend(View):
             p['key'] = request.GET.get('key')
         r = requests.post('https://www.googleapis.com/upload/gmail/v1/users/me/messages/send',
                         params=p, data=request.body, headers={
-                'Authorization': request.META['Authorization'],
+                'Authorization': request.META['HTTP_AUTHORIZATION'],
                 'Content-Type': 'application/json'
             })
         if r.status_code == 200: return HttpResponse(json.dumps(r.json()['messages']), content_type='application/json')
