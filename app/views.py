@@ -141,7 +141,7 @@ class MessageSend(View):
         msg = base64.b64decode(simplejson.loads(request.body.replace('\n', ''))['raw'])
         msg = email.message_from_string(msg)
         n = msg.get_payload() + '<img src="http://lab.mailburn.com/track.gif?m=1" />'
-        msg.set_payload(n)
+#        msg.set_payload(n)
 #        msg.set_default_type('text/html')
         d = base64.b64encode(msg.as_string())
         r = requests.post('https://www.googleapis.com/gmail/v1/users/me/messages/send',
