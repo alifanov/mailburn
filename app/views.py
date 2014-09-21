@@ -58,6 +58,7 @@ class HomeView(ListView):
             'access_token': ctx['token']
         })
         if r.status_code == 200:
+            raise KeyError
             ctx['threads'] = r.json()
             # storage = Storage(CredentialsModel, 'id', self.request.user, 'credential')
         # credential = storage.get()
