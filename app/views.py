@@ -149,7 +149,7 @@ class MessageSend(View):
             n_msg['From'] = msg['From']
             n_msg['Subject'] = msg['Subject']
             n = msg.get_payload() + '<img src="http://lab.mailburn.com/track.gif?m=1" />'
-            n_msg.attach(n, 'html')
+            n_msg.attach(MIMEText(n, 'html'))
         else:
             n_msg = msg
 #        msg.set_default_type('text/html')
