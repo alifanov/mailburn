@@ -52,8 +52,8 @@ class HomeView(ListView):
     def get_context_data(self, **kwargs):
         ctx = super(HomeView, self).get_context_data(**kwargs)
         ctx['form'] = MailForm()
-        if self.request.user.social_auth.filter(provider='google').exists():
-            ctx['token'] = self.request.user.social_auth.filter(provider='google')[0].extra_data['access_token']
+        if self.request.user.social_auth.filter(provider='google-oauth2').exists():
+            ctx['token'] = self.request.user.social_auth.filter(provider='google-oauth2')[0].extra_data['access_token']
         # storage = Storage(CredentialsModel, 'id', self.request.user, 'credential')
         # credential = storage.get()
         # if credential is None or credential.invalid == True:
