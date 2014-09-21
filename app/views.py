@@ -124,7 +124,18 @@ class ThreadsGet(View):
             params['q'] = request.GET.get('q')
         r = requests.get('https://www.googleapis.com/gmail/v1/users/me/threads/{}'.format(kwargs.get('threadId')),
                         params=params)
-        if r.status_code == 200: return HttpResponse(json.dumps(r.json()['messages']), content_type='application/json')
+        if r.status_code == 200:
+            msgs = []
+            for m in r.json()['messages']:
+                mr  = request.get('https://www.googleapis.com/gmail/v1/users/me/messages/{}'.format(m['id']),
+                params={'access_token': request.GET.get('access_token')})
+                if mr.status_code == 200:
+                    msgs.append({
+                        'id': m['id'],
+                        'readed': False,
+                        'snippet': mr.json()['raw']
+                    })
+            return HttpResponse(json.dumps(r.json()['messages']), content_type='application/json')
         else:
             return HttpResponse(r.text, content_type='application/json', status=r.status_code)
         return HttpResponse('')
