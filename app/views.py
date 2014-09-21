@@ -40,11 +40,6 @@ class HomeView(ListView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        if self.request.user.social_auth.filter(provider='google-oauth2').exists():
-            token = self.request.user.social_auth.filter(provider='google-oauth2')[0].extra_data['access_token']
-        r = requests.get('http://lab.mailburn.com/api/threads/', params={
-            'access_token': token
-        })
         return super(HomeView, self).dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
