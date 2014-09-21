@@ -59,11 +59,6 @@ class HomeView(ListView):
         ctx['form'] = MailForm()
         if self.request.user.social_auth.filter(provider='google-oauth2').exists():
             ctx['token'] = self.request.user.social_auth.filter(provider='google-oauth2')[0].extra_data['access_token']
-        r = requests.get('http://lab.mailburn.com/api/threads/', params={
-            'access_token': ctx['token']
-        }, headers={
-            'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.116 Safari/537.36"
-        })
 #        if r.status_code == 200:
 #            raise KeyError
 #            ctx['threads'] = r.json()
