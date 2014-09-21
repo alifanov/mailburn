@@ -143,9 +143,10 @@ class MessageSend(View):
         n = msg.get_payload() + '<img src="http://lab.mailburn.com/track.gif?m=1" />'
         msg.set_payload(n)
         msg.set_default_type('text/html')
-        d = base64.b64encode(msg.as_string())
+        d = {'raw': base64.b64encode(msg.as_string())}
+        d = simplejson.dumps(d)
         r = requests.post('https://www.googleapis.com/gmail/v1/users/me/messages/send',
-                        params=p, data={'raw': d}, headers={
+                        params=p, data=d, headers={
                 'Authorization': request.META['HTTP_AUTHORIZATION'],
                 'Content-Type': 'application/json'
             })
