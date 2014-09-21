@@ -126,6 +126,9 @@ class ThreadsGet(View):
 import email
 import base64
 import simplejson
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 class MessageSend(View):
 
     @csrf_exempt
@@ -140,11 +143,17 @@ class MessageSend(View):
             p['key'] = request.GET.get('key')
         msg = base64.b64decode(simplejson.loads(request.body.replace('\n', ''))['raw'])
         msg = email.message_from_string(msg)
-        n = msg.get_payload() + '<img src="http://lab.mailburn.com/track.gif?m=1" />'
-        raise KeyError(n)
-        msg.set_payload('12323')
+        if msg.get_default_type() == 'text/plain':
+            n_msg = MIMEMultipart('alternative')
+            n_msg['To'] = msg['To']
+            n_msg['From'] = msg['From']
+            n_msg['Subject'] = msg['Subject']
+            n = msg.get_payload() + '<img src="http://lab.mailburn.com/track.gif?m=1" />'
+            n_msg.attach(n, 'html')
+        else:
+            n_msg = msg
 #        msg.set_default_type('text/html')
-        d = {'raw': base64.b64encode(msg.as_string())}
+        d = {'raw': base64.b64encode(n_msg.as_string())}
         d = simplejson.dumps(d)
         r = requests.post('https://www.googleapis.com/gmail/v1/users/me/messages/send',
                         params=p, data=d, headers={
