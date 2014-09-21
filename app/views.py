@@ -54,6 +54,9 @@ class HomeView(ListView):
         ctx['form'] = MailForm()
         if self.request.user.social_auth.filter(provider='google-oauth2').exists():
             ctx['token'] = self.request.user.social_auth.filter(provider='google-oauth2')[0].extra_data['access_token']
+        ctx['threads'] = requests.get('http://lab.mailburn.com/api/threads/', params={
+            'access_token': ctx['token']
+        })
         # storage = Storage(CredentialsModel, 'id', self.request.user, 'credential')
         # credential = storage.get()
         # if credential is None or credential.invalid == True:
