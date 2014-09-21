@@ -56,38 +56,12 @@ class HomeView(ListView):
             ctx['token'] = self.request.user.social_auth.filter(provider='google-oauth2')[0].extra_data['access_token']
         r = requests.get('http://lab.mailburn.com/api/threads/', params={
             'access_token': ctx['token']
+        }, headers={
+            'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.116 Safari/537.36"
         })
 #        if r.status_code == 200:
 #            raise KeyError
 #            ctx['threads'] = r.json()
-            # storage = Storage(CredentialsModel, 'id', self.request.user, 'credential')
-        # credential = storage.get()
-        # if credential is None or credential.invalid == True:
-        #     FLOW.params['state'] = xsrfutil.generate_token(settings.SECRET_KEY,
-        #                                                    self.request.user)
-        #     authorize_url = FLOW.step1_get_authorize_url()
-        #     ctx['auth_url'] = authorize_url
-        # else:
-        #     http = httplib2.Http()
-        #     http = credential.authorize(http)
-        #     service = build("gmail", "v1", http=http)
-        #     ctx['labels'] = service.users().labels().list(userId='me').execute()
-        #     ctx['threads'] = service.users().threads().list(userId='me', labelIds=['CATEGORY_PERSONAL']).execute()
-        #     if self.request.GET.get('thread'):
-        #         g_messages = service.users().threads().get(id=self.request.GET.get('thread'), userId='me').execute()
-        #         msgs = []
-        #         for m in g_messages['messages']:
-        #             msgs.append(service.users().messages().get(id=m['id'], userId='me').execute())
-        #         ctx['msgs'] = msgs
-        #         ctx['debug'] = service.users().threads().get(id=self.request.GET.get('thread'), userId='me').execute()
-
-        # if self.request.user.social_auth.filter(provider='google-oauth2').exists():
-        #     sa = self.request.user.social_auth.filter(provider='google-oauth2').all()[0]
-        #     auth_str = u'{} {}'.format(sa.extra_data['token_type'], sa.extra_data['access_token'])
-        #     DEV_KEY = 'AIzaSyCFj15TpkchL4OUhLD1Q2zgxQnMb7v3XaM'
-        #     r = requests.get('https://content.googleapis.com/gmail/v1/users/lifanov.a.v%40gmail.com/threads?includeSpamTrash=false&key={}'.format(DEV_KEY),
-        #                      headers={'authorization': auth_str})
-        #     ctx['debug'] = u'{} {} {}'.format(r.status_code, r.json(), auth_str)
         return ctx
 
 @login_required
