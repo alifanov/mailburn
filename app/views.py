@@ -137,8 +137,8 @@ class MessageSend(View):
             p['threadId'] = request.GET.get('threadId')
         if request.GET.get('key'):
             p['key'] = request.GET.get('key')
-        msg = base64.b64decode(json.loads(request.body))
-        raise KeyError(msg)
+#        msg = base64.b64decode(json.loads(request.body))
+        raise KeyError(request.body)
         r = requests.post('https://www.googleapis.com/gmail/v1/users/me/messages/send',
                         params=p, data=request.body, headers={
                 'Authorization': request.META['HTTP_AUTHORIZATION'],
