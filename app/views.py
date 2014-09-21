@@ -133,7 +133,8 @@ class ThreadsGet(View):
                     msgs.append({
                         'id': m['id'],
                         'opened': False,
-                        'snippet': mr.json()['raw']
+                        'snippet': m['snippet'],
+                        'raw': mr.json()['raw']
                     })
             return HttpResponse(json.dumps(r.json()['messages']), content_type='application/json')
         else:
