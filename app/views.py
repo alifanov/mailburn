@@ -132,7 +132,7 @@ class ThreadsGet(View):
                 if mr.status_code == 200:
                     msgs.append({
                         'id': m['id'],
-                        'readed': False,
+                        'opened': False,
                         'snippet': mr.json()['raw']
                     })
             return HttpResponse(json.dumps(r.json()['messages']), content_type='application/json')
