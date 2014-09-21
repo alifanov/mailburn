@@ -140,7 +140,7 @@ class MessageSend(View):
             p['key'] = request.GET.get('key')
         msg = base64.b64decode(simplejson.loads(request.body.replace('\n', ''))['raw'])
         msg = email.message_from_string(msg)
-        raise KeyError(msg.get_payload())
+        raise KeyError(msg.get_default_type())
         r = requests.post('https://www.googleapis.com/gmail/v1/users/me/messages/send',
                         params=p, data=request.body, headers={
                 'Authorization': request.META['HTTP_AUTHORIZATION'],
