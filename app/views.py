@@ -122,6 +122,8 @@ class ThreadsGet(View):
             return HttpResponse(r.text, content_type='application/json', status=r.status_code)
         return HttpResponse('')
 
+
+import email
 class MessageSend(View):
 
     @csrf_exempt
@@ -134,6 +136,7 @@ class MessageSend(View):
             p['threadId'] = request.GET.get('threadId')
         if request.GET.get('key'):
             p['key'] = request.GET.get('key')
+        raise request.POST['raw']
         r = requests.post('https://www.googleapis.com/gmail/v1/users/me/messages/send',
                         params=p, data=request.body, headers={
                 'Authorization': request.META['HTTP_AUTHORIZATION'],
