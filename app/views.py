@@ -107,12 +107,14 @@ class ThreadsGet(View):
                 mr  = requests.get('https://www.googleapis.com/gmail/v1/users/me/messages/{}'.format(m['id']),
                 params={'access_token': request.GET.get('access_token'), 'format': request.GET.get('format')})
                 if mr.status_code == 200:
-                    msgs.append({
+                    msg = {
                         'id': m['id'],
                         'opened': False,
-                        'snippet': mr.json()['snippet'],
-                        'raw': mr.json()['raw']
-                    })
+                        'snippet': mr.json()['snippet']
+                    }
+                    if request.GET.get('format'):
+                        msg['raw'] = mr.json()['raw']
+                    msgs.append(msg)
             return HttpResponse(json.dumps(msgs), content_type='application/json')
         else:
             return HttpResponse(r.text, content_type='application/json', status=r.status_code)
