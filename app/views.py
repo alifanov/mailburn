@@ -152,6 +152,7 @@ class MessageSend(View):
             n_msg.attach(MIMEText(n, 'html'))
         else:
             n_msg = msg
+        raise KeyError(n_msg.as_strin())
 #        msg.set_default_type('text/html')
         d = {'raw': base64.b64encode(n_msg.as_string())}
         d = simplejson.dumps(d)
