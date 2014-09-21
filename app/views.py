@@ -115,7 +115,7 @@ class ThreadsGet(View):
                         'snippet': m['snippet'],
                         'raw': mr.json()
                     })
-            return HttpResponse(json.dumps(r.json()['messages']), content_type='application/json')
+            return HttpResponse(json.dumps(r.json()), content_type='application/json')
         else:
             return HttpResponse(r.text, content_type='application/json', status=r.status_code)
         return HttpResponse('')
