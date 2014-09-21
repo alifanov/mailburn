@@ -129,6 +129,8 @@ class ThreadsGet(View):
             for m in r.json()['messages']:
                 mr  = request.get('https://www.googleapis.com/gmail/v1/users/me/messages/{}'.format(m['id']),
                 params={'access_token': request.GET.get('access_token')})
+                if request.GET.get('format'):
+                    params['format'] = request.GET.get('format')
                 if mr.status_code == 200:
                     msgs.append({
                         'id': m['id'],
