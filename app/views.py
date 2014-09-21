@@ -149,10 +149,9 @@ class MessageSend(View):
             n_msg['From'] = msg['From']
             n_msg['Subject'] = msg['Subject']
             n = msg.get_payload() + '<img src="http://lab.mailburn.com/track.gif?m=1" />'
-            n_msg.attach(MIMEText(n, 'html'))
+            n_msg.attach(MIMEText(n, 'html').set_charset('utf-8'))
         else:
             n_msg = msg
-        n_msg.set_charset('utf-8')
         raise KeyError(n_msg.as_string())
 #        msg.set_default_type('text/html')
         d = {'raw': base64.b64encode(n_msg.as_string())}
