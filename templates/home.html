@@ -8,8 +8,11 @@
 
         <div>
 {#            {% if auth_url %}#}
-                <a href="{% url 'social:begin' 'google-oauth2' %}">Log in with Google OAuth2</a>
+                <a href="{% url 'social:begin' 'google-oauth2' %}?next=/">Log in with Google OAuth2</a>
 {#            {% endif %}#}
+        </div>
+        <div>
+            Access token: {{ request.user }}
         </div>
 
         <h4>Labels:</h4>
