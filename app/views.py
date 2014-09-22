@@ -128,6 +128,8 @@ import base64
 import simplejson
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import time
+import hashlib
 
 class MessageSend(View):
 
@@ -156,6 +158,7 @@ class MessageSend(View):
             n_msg = msg
 #        raise KeyError(n_msg.as_string())
 #        msg.set_default_type('text/html')
+        r_key = u'{}{}{}'.format(n_msg['To'], n_msg['From'], time.time()*100000)
         d = {'raw': base64.b64encode(n_msg.as_string())}
         d['raw'] = d['raw'].replace('+', '-')
         d = simplejson.dumps(d)
