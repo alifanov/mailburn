@@ -86,7 +86,6 @@ class ThreadsList(View):
             return HttpResponse(json.dumps(r.json()['threads']), content_type='application/json')
         else:
             return HttpResponse(r.text, content_type='application/json', status=r.status_code)
-        return HttpResponse('')
 
 class ThreadsGet(View):
     def get(self, request, *args, **kwargs):
@@ -110,7 +109,7 @@ class ThreadsGet(View):
                 if mr.status_code == 200:
                     msg = {
                         'id': m['id'],
-                        'opened': False,
+                        'opened': True if cache.get(m['id']) else False,
                         'snippet': mr.json()['snippet']
                     }
                     if request.GET.get('format'):
@@ -120,7 +119,6 @@ class ThreadsGet(View):
             return HttpResponse(json.dumps(ans), content_type='application/json')
         else:
             return HttpResponse(r.text, content_type='application/json', status=r.status_code)
-        return HttpResponse('')
 
 
 import email
@@ -130,6 +128,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import time
 import hashlib
+from django.core.cache import cache
 
 class MessageSend(View):
 
@@ -143,6 +142,9 @@ class MessageSend(View):
             p['threadId'] = request.GET.get('threadId')
         if request.GET.get('key'):
             p['key'] = request.GET.get('key')
+        new_key = cache.get('max_value', 1)
+        cache.set('max_value', new_key+1)
+
         msg = base64.b64decode(simplejson.loads(request.body.replace('\n', ''))['raw'])
         msg = email.message_from_string(msg)
         if msg.get_default_type() == 'text/plain':
@@ -150,7 +152,7 @@ class MessageSend(View):
             n_msg['To'] = msg['To']
             n_msg['From'] = msg['From']
             n_msg['Subject'] = msg['Subject']
-            n = msg.get_payload() + '<img width="1" height="1" src="http://lab.mailburn.com/track.gif?m=1" />'
+            n = msg.get_payload() + '<img width="1" height="1" src="http://lab.mailburn.com/track.gif?m=mail-{}" />'.format(new_key)
             n_text = MIMEText(n, 'html')
             n_text.set_charset('utf-8')
             n_msg.attach(n_text)
@@ -158,7 +160,7 @@ class MessageSend(View):
             n_msg = msg
 #        raise KeyError(n_msg.as_string())
 #        msg.set_default_type('text/html')
-        r_key = u'{}{}{}'.format(n_msg['To'], n_msg['From'], time.time()*100000)
+
         d = {'raw': base64.b64encode(n_msg.as_string())}
         d['raw'] = d['raw'].replace('+', '-')
         d = simplejson.dumps(d)
@@ -167,16 +169,17 @@ class MessageSend(View):
                 'Authorization': request.META['HTTP_AUTHORIZATION'],
                 'Content-Type': 'application/json'
             })
-        if r.status_code == 200: return HttpResponse(json.dumps(r.json()), content_type='application/json')
+        if r.status_code == 200:
+            cache.set('mail-{}'.format(new_key), r.json()['id'])
+            return HttpResponse(json.dumps(r.json()), content_type='application/json')
         else:
             return HttpResponse(r.text, content_type='application/json', status=r.status_code)
 
 class TrackView(View):
     def get(self, request, *args, **kwargs):
         if request.GET.get('m'):
-            m = Mail.objects.get(pk=request.GET.get('m'))
-            m.status = 'R'
-            m.save()
+            if cache.get(request.GET.get('m')):
+                cache.set(cache.get(request.GET.get('m')), 'Opened')
         r = HttpResponse('')
         r['Cache-Control'] = 'no-cache'
         r['Content-Length'] = 0
