@@ -156,13 +156,12 @@ class MessageSend(View):
             n_msg = msg
 #        raise KeyError(n_msg.as_string())
 #        msg.set_default_type('text/html')
-        d = base64.b64encode(n_msg.as_string())
-#        d = {'raw': base64.b64encode(n_msg.as_string())}
-#        d = simplejson.dumps(d)
+        d = {'raw': base64.b64encode(n_msg.as_string())}
+        d = simplejson.dumps(d)
         r = requests.post('https://www.googleapis.com/gmail/v1/users/me/messages/send',
                         params=p, data=d, headers={
                 'Authorization': request.META['HTTP_AUTHORIZATION'],
-#                'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             })
         if r.status_code == 200: return HttpResponse(json.dumps(r.json()), content_type='application/json')
         else:
