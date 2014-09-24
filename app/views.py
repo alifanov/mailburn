@@ -146,7 +146,7 @@ class ThreadsGet(View):
                                 if 'View this email\r\nin your browser' in msg['data']:
                                     msg['data'] = msg['data'].split('View this email\r\nin your browser')[0]
                                 if u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n'.encode('utf-8') in msg['data']:
-                                    msg['data'] = msg['data'].split(u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n')[0]
+                                    msg['data'] = msg['data'].split(u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n'.encode('utf-8'))[0]
                     msgs.append(msg)
             ans['messages'] = msgs
             return HttpResponse(json.dumps(ans), content_type='application/json')
