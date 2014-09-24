@@ -90,7 +90,7 @@ class ThreadsList(View):
                                 params=params)
                 if rr.status_code == 200:
                     ans = rr.json()
-                    nt['snippet'] = ans['messages'][-1]['snippet']
+                    nt['snippet'] = ans['messages'][0]['snippet']
                 threads.append(nt)
             return HttpResponse(json.dumps(threads), content_type='application/json')
         else:
