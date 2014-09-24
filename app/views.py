@@ -137,6 +137,8 @@ class ThreadsGet(View):
                             msg['raw'] = msg_raw
                     else:
                         for part in mr.json()['payload']['parts']:
+                            if 'Yanko' in mr.json()['snippet']:
+                                msg['data'] = mr.json()
                             if part['mimeType'] == 'text/plain':
                                 msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
                                 if '\r\n>' in msg['data']:
