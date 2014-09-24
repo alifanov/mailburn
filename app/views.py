@@ -138,7 +138,7 @@ class ThreadsGet(View):
                     else:
                         for part in mr.json()['payload']['parts']:
                             if part['mimeType'] == 'text/plain':
-                                msg['data'] = base64.urlsafe_b64decode(str(part['body']['data'])).encode('utf-8')
+                                msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
                                 if '\r\n>' in msg['data']:
                                     msg['data'] = msg['data'].split('\r\n>')[0]
                                 if '\r\n--\r\n' in msg['data']:
