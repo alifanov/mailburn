@@ -159,6 +159,8 @@ class ThreadsGet(View):
                 return
             if part['mimeType'] == 'text/html':
                 msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
+                if '\r\nBest regards' in msg['data']:
+                    msg['data'] = msg['data'].split('\r\nBest regards')[0]
             if 'parts' in part:
                 self.parse_parts(msg, part['parts'])
 
