@@ -151,7 +151,7 @@ class ThreadsGet(View):
                     msg['data'] = msg['data'].split('\r\n>')[0]
                 msg['data'] = re.split(r'\r\n[-]+\r\n', msg['data'])[0]
                 msg['data'] = re.split(r'\r\n\d{4}-\d{2}-\d{2}', msg['data'])[0]
-                msg['data'] = re.split(r'\d{2}.\d{2}.\d{4}]', msg['data'])[0]
+                msg['data'] = re.split(r'On\s+\d{2}.\d{2}.\d{2},\s+\d{2}:\d{2}]', msg['data'])[0]
                 if '\r\n—\r\nSent from Mailbox' in msg['data']:
                     msg['data'] = msg['data'].split('\r\n—\r\nSent from Mailbox')[0]
                 if 'View this email\r\nin your browser' in msg['data']:
