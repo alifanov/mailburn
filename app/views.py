@@ -124,7 +124,12 @@ class ThreadsGet(View):
                     }
                     if request.GET.get('format'):
                         msg_raw = str(mr.json()['raw'])
-                        msg['raw'] = msg_raw if not request.GET.get('decode', False) else base64.urlsafe_b64decode(msg_raw)
+                        if request.GET.get('decode'):
+                            msg = email.message_from_string(base64.urlsafe_b64decode(msg_raw))
+                            msg['raw'] = msg['Body']
+
+                        else:
+                            msg['raw'] = msg_raw
                     msgs.append(msg)
             ans['messages'] = msgs
             return HttpResponse(json.dumps(ans), content_type='application/json')
