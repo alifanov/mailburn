@@ -139,7 +139,7 @@ class ThreadsGet(View):
                             if part['mimeType'] == 'text/plain':
                                 msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
                                 if '\r\n>' in msg['data']:
-                                    msg['data'] = msg['data'].replace('\r\n>')[0]
+                                    msg['data'] = msg['data'].split('\r\n>')[0]
                     msgs.append(msg)
             ans['messages'] = msgs
             return HttpResponse(json.dumps(ans), content_type='application/json')
