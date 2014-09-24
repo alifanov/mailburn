@@ -136,28 +136,31 @@ class ThreadsGet(View):
                         else:
                             msg['raw'] = msg_raw
                     else:
-                        for part in mr.json()['payload']['parts']:
-                            if 'Yanko' in mr.json()['snippet']:
-                                msg['data'] = mr.json()
-                            if part['mimeType'] == 'text/plain':
-                                msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
-                                if '\r\n>' in msg['data']:
-                                    msg['data'] = msg['data'].split('\r\n>')[0]
-                                msg['data'] = re.split(r'\r\n[-]+\r\n', msg['data'])[0]
-                                if '\r\n—\r\nSent from Mailbox' in msg['data']:
-                                    msg['data'] = msg['data'].split('\r\n—\r\nSent from Mailbox')[0]
-                                if 'View this email\r\nin your browser' in msg['data']:
-                                    msg['data'] = msg['data'].split('View this email\r\nin your browser')[0]
-                                if u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n'.encode('utf-8') in msg['data']:
-                                    msg['data'] = msg['data'].split(u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n'.encode('utf-8'))[0]
-                                break
-                            if part['mimeType'] == 'text/html':
-                                msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
+                        self.parse_parts(msg, mr.json()['payload']['parts'])
                     msgs.append(msg)
             ans['messages'] = msgs
             return HttpResponse(json.dumps(ans), content_type='application/json')
         else:
             return HttpResponse(r.text, content_type='application/json', status=r.status_code)
+
+    def parse_parts(self, msg, parts):
+        for part in parts:
+            if part['mimeType'] == 'text/plain':
+                msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
+                if '\r\n>' in msg['data']:
+                    msg['data'] = msg['data'].split('\r\n>')[0]
+                msg['data'] = re.split(r'\r\n[-]+\r\n', msg['data'])[0]
+                if '\r\n—\r\nSent from Mailbox' in msg['data']:
+                    msg['data'] = msg['data'].split('\r\n—\r\nSent from Mailbox')[0]
+                if 'View this email\r\nin your browser' in msg['data']:
+                    msg['data'] = msg['data'].split('View this email\r\nin your browser')[0]
+                if u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n'.encode('utf-8') in msg['data']:
+                    msg['data'] = msg['data'].split(u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n'.encode('utf-8'))[0]
+                return
+            if part['mimeType'] == 'text/html':
+                msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
+            if 'parts' in part:
+                self.parse_parts(msg, part['parts'])
 
 
 import email
