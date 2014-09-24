@@ -152,19 +152,19 @@ class ThreadsGet(View):
         for part in parts:
             if part['mimeType'] == 'text/plain':
                 msg['data'] = base64.urlsafe_b64decode(str(part['body']['data'])).decode('utf-8')
-                if '\r\n>' in msg['data']:
-                    msg['data'] = msg['data'].split('\r\n>')[0]
+                if u'\r\n>' in msg['data']:
+                    msg['data'] = msg['data'].split(u'\r\n>')[0]
                 msg['data'] = re.split(r'\r\n[-]+\r\n', msg['data'])[0]
                 msg['data'] = re.split('\d{2} (?u)[\w]+ \d{4} (?u)\w{1}., \d{2}:\d{2}', msg['data'], re.U)[0]
                 msg['data'] = re.split(r'\r\n\d{4}-\d{2}-\d{2}', msg['data'])[0]
                 msg['data'] = re.split(r'On \d{2}.\d{2}.\d{2}, \d{2}:\d{2}', msg['data'])[0]
                 msg['data'] = re.split(r'\r\n\s+From: \w+', msg['data'])[0]
                 if u'\r\n—\r\nSent from Mailbox' in msg['data']:
-                    msg['data'] = msg['data'].split('\r\n—\r\nSent from Mailbox')[0]
+                    msg['data'] = msg['data'].split(u'\r\n—\r\nSent from Mailbox')[0]
                 if u'View this email\r\nin your browser' in msg['data']:
-                    msg['data'] = msg['data'].split('View this email\r\nin your browser')[0]
+                    msg['data'] = msg['data'].split(u'View this email\r\nin your browser')[0]
                 if u'\r\nBest regards' in msg['data']:
-                    msg['data'] = msg['data'].split('\r\nBest regards')[0]
+                    msg['data'] = msg['data'].split(u'\r\nBest regards')[0]
                 if u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n' in msg['data']:
                     msg['data'] = msg['data'].split(u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n')[0]
                 msg['data'] = re.split(r'[\r\n]+$', msg['data'])[0]
