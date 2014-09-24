@@ -142,6 +142,8 @@ class ThreadsGet(View):
                                 if '\r\n>' in msg['data']:
                                     msg['data'] = msg['data'].split('\r\n>')[0]
                                 msg['data'] = re.split(r'\r\n[-]+\r\n', msg['data'])[0]
+                                if '\r\n—\r\nSent from Mailbox' in msg['data']:
+                                    msg['data'] = msg['data'].split('\r\n—\r\nSent from Mailbox')[0]
                                 if 'View this email\r\nin your browser' in msg['data']:
                                     msg['data'] = msg['data'].split('View this email\r\nin your browser')[0]
                                 if u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n'.encode('utf-8') in msg['data']:
