@@ -147,8 +147,8 @@ class ThreadsGet(View):
                                 if u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n'.encode('utf-8') in msg['data']:
                                     msg['data'] = msg['data'].split(u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n'.encode('utf-8'))[0]
                                 continue
-                            if part['mimeType'] == 'text/html':
-                                msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
+                            # if part['mimeType'] == 'text/html':
+                            #     msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
                     msgs.append(msg)
             ans['messages'] = msgs
             return HttpResponse(json.dumps(ans), content_type='application/json')
