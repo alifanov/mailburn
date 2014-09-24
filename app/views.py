@@ -159,14 +159,14 @@ class ThreadsGet(View):
                 msg['data'] = re.split(r'\r\n\d{4}-\d{2}-\d{2}', msg['data'])[0]
                 msg['data'] = re.split(r'On \d{2}.\d{2}.\d{2}, \d{2}:\d{2}', msg['data'])[0]
                 msg['data'] = re.split(r'\r\n\s+From: \w+', msg['data'])[0]
-                if '\r\n—\r\nSent from Mailbox' in msg['data']:
+                if u'\r\n—\r\nSent from Mailbox' in msg['data']:
                     msg['data'] = msg['data'].split('\r\n—\r\nSent from Mailbox')[0]
-                if 'View this email\r\nin your browser' in msg['data']:
+                if u'View this email\r\nin your browser' in msg['data']:
                     msg['data'] = msg['data'].split('View this email\r\nin your browser')[0]
-                if '\r\nBest regards' in msg['data']:
+                if u'\r\nBest regards' in msg['data']:
                     msg['data'] = msg['data'].split('\r\nBest regards')[0]
-                if u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n'.encode('utf-8') in msg['data']:
-                    msg['data'] = msg['data'].split(u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n'.encode('utf-8'))[0]
+                if u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n' in msg['data']:
+                    msg['data'] = msg['data'].split(u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n')[0]
                 msg['data'] = re.split(r'[\r\n]+$', msg['data'])[0]
                 return
             if part['mimeType'] == 'text/html':
