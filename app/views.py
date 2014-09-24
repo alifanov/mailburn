@@ -154,14 +154,13 @@ class ThreadsGet(View):
                     msg['data'] = msg['data'].split('\r\n—\r\nSent from Mailbox')[0]
                 if 'View this email\r\nin your browser' in msg['data']:
                     msg['data'] = msg['data'].split('View this email\r\nin your browser')[0]
+                if '\r\nBest regards' in msg['data']:
+                    msg['data'] = msg['data'].split('\r\nBest regards')[0]
                 if u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n'.encode('utf-8') in msg['data']:
                     msg['data'] = msg['data'].split(u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n'.encode('utf-8'))[0]
                 return
             if part['mimeType'] == 'text/html':
                 msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
-                if '\r\nBest regards' in msg['data']:
-
-                    msg['data'] = msg['data'].split('\r\nBest regards')[0]
             if 'parts' in part:
                 self.parse_parts(msg, part['parts'])
 
