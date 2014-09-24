@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from app.models import *
 from app.forms import *
 import requests
-import os, json
+import os, json, re
 import httplib2
 
 from apiclient.discovery import build
@@ -141,8 +141,7 @@ class ThreadsGet(View):
                                 msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
                                 if '\r\n>' in msg['data']:
                                     msg['data'] = msg['data'].split('\r\n>')[0]
-                                if '\r\n--\r\n' in msg['data']:
-                                    msg['data'] = msg['data'].split('\r\n--\r\n')[0]
+                                msg['data'] = re.split(r'\r\n[-]+\r\n', msg['data'])[0]
                                 if 'View this email\r\nin your browser' in msg['data']:
                                     msg['data'] = msg['data'].split('View this email\r\nin your browser')[0]
                                 if u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n'.encode('utf-8') in msg['data']:
