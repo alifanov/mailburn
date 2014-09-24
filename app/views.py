@@ -86,13 +86,18 @@ class ThreadsList(View):
         if r.status_code == 200:
             threads = []
             for t in r.json()['threads']:
+                thread_snippet = cache.get('thread_{}'.format(t['id']), False)
                 nt = t
-                rr = requests.get('https://www.googleapis.com/gmail/v1/users/me/threads/{}'.format(t['id']),
-                                params=params)
-                if rr.status_code == 200:
-                    ans = rr.json()
-                    nt['snippet'] = ans['messages'][0]['snippet']
-                    nt['messages'] = len(ans['messages'])
+                if not thread_snippet:
+                    rr = requests.get('https://www.googleapis.com/gmail/v1/users/me/threads/{}'.format(t['id']),
+                                    params=params)
+                    if rr.status_code == 200:
+                        ans = rr.json()
+                        thread_snippet = ans['messages'][0]['snippet']
+                        cache.set('thread_{}'.format(t['id']))
+                        nt['snippet'] = thread_snippet
+                else:
+                    t['snippet'] = thread_snippet
                 threads.append(nt)
             return HttpResponse(json.dumps(threads), content_type='application/json')
         else:
