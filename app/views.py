@@ -134,6 +134,8 @@ class ThreadsGet(View):
                                 msg['raw'] = msg.get_payload()
                         else:
                             msg['raw'] = msg_raw
+                    else:
+                        msg['data'] = mr.json()['payload']
                     msgs.append(msg)
             ans['messages'] = msgs
             return HttpResponse(json.dumps(ans), content_type='application/json')
