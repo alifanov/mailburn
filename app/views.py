@@ -126,7 +126,12 @@ class ThreadsGet(View):
                         msg_raw = str(mr.json()['raw'])
                         if request.GET.get('decode'):
                             msg = email.message_from_string(base64.urlsafe_b64decode(msg_raw))
-                            msg['raw'] = msg['Subject']
+                            if msg.is_multipart():
+                                msg['raw'] = ''
+                                for payload in msg.get_payload():
+                                    msg['raw'] += payload.get_payload()
+                            else:
+                                msg['raw'] = msg.get_payload()
                         else:
                             msg['raw'] = msg_raw
                     msgs.append(msg)
