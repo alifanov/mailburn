@@ -1,3 +1,4 @@
+# coding: utf-8
 from django.views.generic import TemplateView, ListView, View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required, permission_required
