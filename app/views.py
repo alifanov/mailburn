@@ -123,7 +123,7 @@ class ThreadsGet(View):
                         'snippet': mr.json()['snippet']
                     }
                     if request.GET.get('format'):
-                        msg['raw'] = mr.json()['raw'] if not request.GET.get('decode', False) else base64.decode(mr.json()['raw'])
+                        msg['raw'] = mr.json()['raw'] if not request.GET.get('decode', False) else base64.b64decode(mr.json()['raw'])
                     msgs.append(msg)
             ans['messages'] = msgs
             return HttpResponse(json.dumps(ans), content_type='application/json')
