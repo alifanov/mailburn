@@ -94,7 +94,7 @@ class ThreadsList(View):
                     if rr.status_code == 200:
                         ans = rr.json()
                         thread_snippet = ans['messages'][0]['snippet']
-                        cache.set('thread_{}'.format(t['id']))
+                        cache.set('thread_{}'.format(t['id']), thread_snippet)
                         nt['snippet'] = thread_snippet
                 else:
                     t['snippet'] = thread_snippet
