@@ -137,7 +137,7 @@ class ThreadsGet(View):
                     else:
                         for part in mr.json()['payload']['parts']:
                             if part['mimeType'] == 'text/plain':
-                                msg['data'] = base64.urlsafe_b64decode(part['body']['data'])
+                                msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
                     msgs.append(msg)
             ans['messages'] = msgs
             return HttpResponse(json.dumps(ans), content_type='application/json')
