@@ -155,7 +155,7 @@ class ThreadsGet(View):
                 if '\r\n>' in msg['data']:
                     msg['data'] = msg['data'].split('\r\n>')[0]
                 msg['data'] = re.split(r'\r\n[-]+\r\n', msg['data'])[0]
-                msg['data'] = re.split(r'\r\n\d{2} \w+ \d{4} г., \d{2}:\d{2}', msg['data'])[0]
+                msg['data'] = re.split('\d{2} (?u)[\w]+ \d{4} (?u)\w{1}., \d{2}:\d{2}', msg['data'], re.U)[0]
                 msg['data'] = re.split(r'\r\n\d{4}-\d{2}-\d{2}', msg['data'])[0]
                 msg['data'] = re.split(r'On \d{2}.\d{2}.\d{2}, \d{2}:\d{2}', msg['data'])[0]
                 msg['data'] = re.split(r'\r\n\s+From: \w+', msg['data'])[0]
