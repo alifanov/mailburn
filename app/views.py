@@ -20,6 +20,7 @@ from django.conf import settings
 from oauth2client import xsrfutil
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.django_orm import Storage
+from bs4 import BeautifulSoup
 # Create your views here.
 CLIENT_SECRETS = os.path.join(os.path.dirname(__file__), '..', 'client_secrets.json')
 
@@ -182,6 +183,8 @@ class ThreadsGet(View):
                 return
             if part['mimeType'] == 'text/html':
                 msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
+                soup = BeautifulSoup(msg['data'])
+                msg['data'] = u''.join(soup.findAll(text=True))
             if 'parts' in part:
                 self.parse_parts(msg, part['parts'])
 
