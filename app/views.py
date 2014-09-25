@@ -156,6 +156,7 @@ class ThreadsGet(View):
         for part in parts:
             if part['mimeType'] == 'text/plain':
                 msg['data'] = base64.urlsafe_b64decode(str(part['body']['data'])).decode('utf-8')
+                msg['original_data'] = msg['data']
                 if u'\r\n>' in msg['data']:
                     msg['data'] = msg['data'].split(u'\r\n>')[0]
                 msg['data'] = re.split(r'\r\n[-]+\r\n', msg['data'])[0]
