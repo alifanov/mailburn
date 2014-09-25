@@ -189,7 +189,7 @@ class ThreadsGet(View):
                 soup = BeautifulSoup(msg['data'])
                 msg['data'] = u''.join(soup.findAll(text=True))
                 msg['data'] = re.split(r'View this conversation on GetMailDone', msg['data'])[0]
-                msg['data'] = re.split(r'\d{2}.\d{2}.\d{4}, \d{2}:\d{2},', msg['data'])[0]
+                msg['data'] = re.split(r'\d{2}.\d{2}.\d{4}, \d{2}:\d{2}, \\', msg['data'])[0]
             if 'parts' in part:
                 self.parse_parts(msg, part['parts'])
 
