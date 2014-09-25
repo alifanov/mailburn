@@ -183,6 +183,7 @@ class ThreadsGet(View):
                 msg['data'] = re.split(r'[\r\n]+$', msg['data'])[0]
                 return
             if part['mimeType'] == 'text/html':
+                msg['type'] = 'html'
                 msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
                 soup = BeautifulSoup(msg['data'])
                 msg['data'] = u''.join(soup.findAll(text=True))
