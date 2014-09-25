@@ -171,8 +171,6 @@ class ThreadsGet(View):
                 msg['data'] = re.split(r'\r\nOn [\w]+, [\w]+ \d{2}, \d{4} at \d{2}:\d{2}', msg['data'])[0]
                 msg['data'] = re.split(r'\r\n\d{2}.\d{2}.\d{4}, \d{2}:\d{2},', msg['data'])[0]
                 msg['data'] = re.split(r'\r\n\s+From: \w+', msg['data'])[0]
-                if u'View this conversation on GetMailDone' in msg['data']:
-                    msg['data'] = msg['data'].split(u'View this conversation on GetMailDone')[0]
                 if u'—\r\nSent from Mailbox' in msg['data']:
                     msg['data'] = msg['data'].split(u'—\r\nSent from Mailbox')[0]
                 if u'View this email\r\nin your browser' in msg['data']:
@@ -187,6 +185,7 @@ class ThreadsGet(View):
                 msg['data'] = base64.urlsafe_b64decode(str(part['body']['data']))
                 soup = BeautifulSoup(msg['data'])
                 msg['data'] = u''.join(soup.findAll(text=True))
+                msg['data'] = re.split(r'View this conversation on GetMailDone', msg['data'])[0]
             if 'parts' in part:
                 self.parse_parts(msg, part['parts'])
 
