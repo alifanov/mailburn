@@ -167,9 +167,8 @@ class ThreadsGet(View):
                 msg['data'] = re.split(r'On \d{2} [\w]+ \d{4} \d{2}:\d{2}', msg['data'])[0]
                 msg['data'] = re.split(r'\r\n\d{2}.\d{2}.\d{4}, \d{2}:\d{2},', msg['data'])[0]
                 msg['data'] = re.split(r'\r\n\s+From: \w+', msg['data'])[0]
-                msg['data'] = re.split(r'—\r\nSent from Mailbox', msg['data'])[0]
-                # if u'' in msg['data']:
-                #     msg['data'] = msg['data'].split(u'\r\n—\r\nSent from Mailbox')[0]
+                if u'—\r\nSent from Mailbox' in msg['data']:
+                    msg['data'] = msg['data'].split(u'—\r\nSent from Mailbox')[0]
                 if u'View this email\r\nin your browser' in msg['data']:
                     msg['data'] = msg['data'].split(u'View this email\r\nin your browser')[0]
                 if u'\r\nBest regards' in msg['data']:
