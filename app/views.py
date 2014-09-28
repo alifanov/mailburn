@@ -179,6 +179,8 @@ class ThreadsGet(View):
                 msg['data'] = re.split(r'\r\n(?u)[\w]+, \d{1,2} (?u)[\w]+ \d{4} (?u)\w{1}.', msg['data'], re.U)[0]
                 if u'—\r\nSent from Mailbox' in msg['data']:
                     msg['data'] = msg['data'].split(u'—\r\nSent from Mailbox')[0]
+                if u'\r\nSend from Windows Phone' in msg['data']:
+                    msg['data'] = msg['data'].split(u'\r\nSend from Windows Phone')[0]
                 if u'View this email\r\nin your browser' in msg['data']:
                     msg['data'] = msg['data'].split(u'View this email\r\nin your browser')[0]
                 if u'\r\nBest regards' in msg['data']:
