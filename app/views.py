@@ -176,6 +176,7 @@ class ThreadsGet(View):
                 msg['data'] = re.split(r'\r\n\d{2}.\d{2}.\d{4} \d{2}:\d{2} ', msg['data'])[0]
                 msg['data'] = re.split(r'\d{2}.\d{2}.\d{4}, \d{2}:\d{2}, \\', msg['data'])[0]
                 msg['data'] = re.split(r'\r\n\s+From: \w+', msg['data'])[0]
+                msg['data'] = re.split(r'\r\nBest Regards, \w+ \w+\r\n', msg['data'])[0]
                 msg['data'] = re.split(r'\n[\w]+, \d{1,2} [\w]+ \d{4} \d{2}:\d{2}', msg['data'])[0]
                 msg['data'] = re.split(r'\r\n(?u)[\w]+, \d{1,2} (?u)[\w]+ \d{4} (?u)\w{1}.', msg['data'], re.U)[0]
                 if u'—\r\nSent from Mailbox' in msg['data']:
