@@ -142,7 +142,7 @@ class ThreadsGet(View):
                                     if part == '(text/html)':
                                         part.body = self.msg_filter(part.body)
                             else:
-                                msg.body = self.msg_filter(part.body)
+                                msg.body = self.msg_filter(msg.body)
                             ans_msg['raw'] = mime.python_message_to_string(msg.to_python_message())
                         else:
                             ans_msg['raw'] = msg_raw
@@ -151,7 +151,7 @@ class ThreadsGet(View):
                             self.parse_parts(msg, mr.json()['payload']['parts'])
                         else:
                             self.parse_parts(msg, [mr.json()['payload'],])
-                    msgs.append(msg)
+                    msgs.append(ans_msg)
             ans['messages'] = msgs
             return HttpResponse(json.dumps(ans), content_type='application/json')
         else:
