@@ -138,11 +138,14 @@ class ThreadsGet(View):
                                 ans_msg['raw'] = ''
                                 for part in msg.parts:
                                     if part == '(text/plain)':
-                                        ans_msg['raw'] = self.msg_filter(part.body)
-                                    if part == '(text/html)' and not ans_msg['raw']:
-                                        ans_msg['raw'] = self.msg_filter(part.body)
+                                        part.body = self.msg_filter(part.body)
+                                        break
+                                    if part == '(text/html)':
+                                        part.body = self.msg_filter(part.body)
                             else:
+                                part.body = self.msg_filter(part.body)
                                 ans_msg['raw'] = self.msg_filter(msg.body)
+                            ans_msg['raw'] = mime.python_message_to_string(msg.to_python_message())
                         else:
                             ans_msg['raw'] = msg_raw
                     else:
