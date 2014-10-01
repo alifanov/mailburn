@@ -148,9 +148,9 @@ class ThreadsGet(View):
                             ans_msg['raw'] = msg_raw
                     else:
                         if 'parts' in mr.json()['payload']:
-                            self.parse_parts(msg, mr.json()['payload']['parts'])
+                            self.parse_parts(ans_msg, mr.json()['payload']['parts'])
                         else:
-                            self.parse_parts(msg, [mr.json()['payload'],])
+                            self.parse_parts(ans_msg, [mr.json()['payload'],])
                     msgs.append(ans_msg)
             ans['messages'] = msgs
             return HttpResponse(json.dumps(ans), content_type='application/json')
