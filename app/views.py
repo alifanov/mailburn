@@ -21,6 +21,7 @@ from oauth2client import xsrfutil
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.django_orm import Storage
 from bs4 import BeautifulSoup
+from flanker import mime
 # Create your views here.
 CLIENT_SECRETS = os.path.join(os.path.dirname(__file__), '..', 'client_secrets.json')
 
@@ -132,17 +133,19 @@ class ThreadsGet(View):
                     if request.GET.get('format'):
                         msg_raw = str(mr.json()['raw'])
                         if request.GET.get('decode'):
-                            msg = email.message_from_string(base64.urlsafe_b64decode(msg_raw))
-                            if msg.is_multipart():
+                            msg = mime.from_string(base64.urlsafe_b64decode(msg_raw))
+                            if msg.content_type.is_multipart():
                                 msg['raw'] = ''
-                                for payload in msg.get_payload():
-                                    msg['raw'] += payload.get_payload()
+                                for part in msg.parts:
+                                    if part == '(text/plain)':
+                                        msg['raw'] = self.msg_filter(part.body)
+                                    if part == '(text/html)' and not msg['raw']:
+                                        msg['raw'] = self.msg_filter(part.body)
                             else:
-                                msg['raw'] = msg.get_payload()
+                                msg['raw'] = self.msg_filter(msg.body)
                         else:
                             msg['raw'] = msg_raw
                     else:
-                        # msg['data'] = mr.json()
                         if 'parts' in mr.json()['payload']:
                             self.parse_parts(msg, mr.json()['payload']['parts'])
                         else:
@@ -152,6 +155,41 @@ class ThreadsGet(View):
             return HttpResponse(json.dumps(ans), content_type='application/json')
         else:
             return HttpResponse(r.text, content_type='application/json', status=r.status_code)
+
+    def msg_filter(self, msg, remove_tags = False):
+        if u'\r\n>' in msg:
+            msg = msg.split(u'\r\n>')[0]
+        msg = re.split(r'\r\n[-]+\r\n', msg)[0]
+        msg = re.split(r'\r\n[-]{2,}', msg)[0]
+        msg = re.split(r'\r\n[-]{2,}\s{2,}', msg)[0]
+        msg = re.split('\d{1,2} (?u)[\w]+ \d{4} (?u)\w{1}., \d{2}:\d{2}', msg, re.U)[0]
+        msg = re.split('\d{2} (?u)[\w]+ \d{4} (?u)\w{1}. \d{2}:\d{2}', msg, re.U)[0]
+        msg = re.split(r'\r\n\d{4}-\d{2}-\d{2}', msg)[0]
+        msg = re.split(r'On \d{2}.\d{2}.\d{2}, \d{2}:\d{2}', msg)[0]
+        msg = re.split(r'\r\n\d{2}.\d{2}.\d{2}, (?u)[\w]+', msg)[0]
+        msg = re.split(r'On \d{1,2} [\w]+ \d{4} \d{2}:\d{2}', msg)[0]
+        msg = re.split(r'\r\nOn [\w]+, [\w]+ \d{1,2}, \d{4},', msg)[0]
+        msg = re.split(r'\r\nOn [\w]+ \d{1,2}, \d{4}, at \d{1,2}:\d{1,2}', msg)[0]
+        msg = re.split(r'\r\nOn [\w]+, [\w]+ \d{1,2}, \d{4} at \d{2}:\d{2}', msg)[0]
+        msg = re.split(r'\r\n\d{2}.\d{2}.\d{4}, \d{2}:\d{2},', msg)[0]
+        msg = re.split(r'\r\n\d{2}.\d{2}.\d{4} \d{2}:\d{2} ', msg)[0]
+        msg = re.split(r'\d{2}.\d{2}.\d{4}, \d{2}:\d{2}, \\', msg)[0]
+        msg = re.split(r'\r\n\s+From: \w+', msg)[0]
+        msg = re.split(r'\r\nBest Regards, \w+ \w+\r\n', msg)[0]
+        msg = re.split(r'\n[\w]+, \d{1,2} [\w]+ \d{4} \d{2}:\d{2}', msg)[0]
+        msg = re.split(r'\r\n(?u)[\w]+, \d{1,2} (?u)[\w]+ \d{4} (?u)\w{1}.', msg, re.U)[0]
+        if u'—\r\nSent from Mailbox' in msg:
+            msg = msg.split(u'—\r\nSent from Mailbox')[0]
+        if u'\r\nSend from Windows Phone' in msg:
+            msg = msg.split(u'\r\nSend from Windows Phone')[0]
+        if u'View this email\r\nin your browser' in msg:
+            msg = msg.split(u'View this email\r\nin your browser')[0]
+        if u'\r\nBest regards' in msg:
+            msg = msg.split(u'\r\nBest regards')[0]
+        if u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n' in msg:
+            msg = msg.split(u'\r\nОтправлено из мобильной Почты Mail.Ru\r\n')[0]
+        msg = re.split(r'[\r\n]+$', msg)[0]
+        return msg
 
     def parse_parts(self, msg, parts):
         for part in parts:
