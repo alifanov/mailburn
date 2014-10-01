@@ -135,7 +135,6 @@ class ThreadsGet(View):
                         if request.GET.get('decode'):
                             msg = mime.from_string(base64.urlsafe_b64decode(msg_raw))
                             if msg.content_type.is_multipart():
-                                ans_msg['raw'] = ''
                                 for part in msg.parts:
                                     if part == '(text/plain)':
                                         part.body = self.msg_filter(part.body)
@@ -144,7 +143,6 @@ class ThreadsGet(View):
                                         part.body = self.msg_filter(part.body)
                             else:
                                 part.body = self.msg_filter(part.body)
-                                ans_msg['raw'] = self.msg_filter(msg.body)
                             ans_msg['raw'] = mime.python_message_to_string(msg.to_python_message())
                         else:
                             ans_msg['raw'] = msg_raw
