@@ -142,7 +142,7 @@ class ThreadsGet(View):
                                     if part == '(text/html)':
                                         part.body = self.msg_filter(part.body)
                             else:
-                                part.body = self.msg_filter(part.body)
+                                msg.body = self.msg_filter(part.body)
                             ans_msg['raw'] = mime.python_message_to_string(msg.to_python_message())
                         else:
                             ans_msg['raw'] = msg_raw
