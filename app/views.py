@@ -134,6 +134,7 @@ class ThreadsGet(View):
                         msg_raw = str(mr.json()['raw'])
                         if request.GET.get('decode'):
                             msg = mime.from_string(base64.urlsafe_b64decode(msg_raw))
+                            raise KeyError(msg)
                             if msg.content_type.is_multipart():
                                 for part in msg.parts:
                                     if part == '(text/plain)':
