@@ -138,6 +138,7 @@ class ThreadsGet(View):
                                 for part in msg.parts:
                                     if part == '(text/plain)':
                                         part.body = self.msg_filter(part.body)
+                                        raise KeyError(part.body)
                                         break
                                     if part == '(text/html)':
                                         part.body = self.msg_filter(part.body)
