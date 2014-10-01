@@ -135,8 +135,8 @@ class ThreadsGet(View):
                         if request.GET.get('decode'):
                             msg = mime.from_string(base64.urlsafe_b64decode(msg_raw))
                             if msg.content_type.is_multipart():
-                                raise KeyError(msg.parts)
                                 for part in msg.parts:
+                                    raise KeyError(dir(part))
                                     if part == '(text/plain)':
                                         part.body = self.msg_filter(part.body)
                                         raise KeyError(part.body)
