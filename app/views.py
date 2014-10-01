@@ -125,7 +125,7 @@ class ThreadsGet(View):
                 mr  = requests.get('https://www.googleapis.com/gmail/v1/users/me/messages/{}'.format(m['id']),
                 params={'access_token': request.GET.get('access_token'), 'format': request.GET.get('format')})
                 if mr.status_code == 200:
-                    msg = {
+                    ans_msg = {
                         'id': m['id'],
                         'opened': True if cache.get(m['id']) else False,
                         'snippet': mr.json()['snippet']
@@ -135,16 +135,16 @@ class ThreadsGet(View):
                         if request.GET.get('decode'):
                             msg = mime.from_string(base64.urlsafe_b64decode(msg_raw))
                             if msg.content_type.is_multipart():
-                                msg['raw'] = ''
+                                ans_msg['raw'] = ''
                                 for part in msg.parts:
                                     if part == '(text/plain)':
-                                        msg['raw'] = self.msg_filter(part.body)
-                                    if part == '(text/html)' and not msg['raw']:
-                                        msg['raw'] = self.msg_filter(part.body)
+                                        ans_msg['raw'] = self.msg_filter(part.body)
+                                    if part == '(text/html)' and not ans_msg['raw']:
+                                        ans_msg['raw'] = self.msg_filter(part.body)
                             else:
-                                msg['raw'] = self.msg_filter(msg.body)
+                                ans_msg['raw'] = self.msg_filter(msg.body)
                         else:
-                            msg['raw'] = msg_raw
+                            ans_msg['raw'] = msg_raw
                     else:
                         if 'parts' in mr.json()['payload']:
                             self.parse_parts(msg, mr.json()['payload']['parts'])
