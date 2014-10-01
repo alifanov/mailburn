@@ -154,6 +154,7 @@ class ThreadsGet(View):
                             self.parse_parts(msg, mr.json()['payload']['parts'])
                         else:
                             self.parse_parts(msg, [mr.json()['payload'],])
+                    raise KeyError(ans_msg)
                     msgs.append(ans_msg)
             ans['messages'] = msgs
             return HttpResponse(json.dumps(ans), content_type='application/json')
