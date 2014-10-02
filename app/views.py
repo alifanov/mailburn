@@ -144,6 +144,7 @@ class ThreadsGet(View):
                             else:
                                 msg.body = self.msg_filter(msg.body)
                             ans_msg['raw'] = mime.python_message_to_string(msg.to_python_message())
+                            ans_msg['raw'] = base64.urlsafe_b64encode(ans_msg['raw'])
                         else:
                             ans_msg['raw'] = msg_raw
                     else:
