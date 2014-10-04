@@ -35,6 +35,18 @@ FLOW = flow_from_clientsecrets(
     ],
     redirect_uri='http://lab.mailburn.com/oauth2callback')
 
+class Decode64(TemplateView):
+    template_name = 'decode64.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(Decode64, self).get_context_data(**kwargs)
+        if self.request.POST and self.request.POST.get('text'):
+            if self.request.POST.get('urlsafe'):
+                ctx['decoded'] = base64.urlsafe_b64decode(self.request.POST.get('text'))
+            else:
+                ctx['decoded'] = base64.b64decode(self.request.POST.get('text'))
+        return ctx
+
 class HomeView(ListView):
     template_name = 'home.html'
     model = Mail
