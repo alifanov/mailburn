@@ -39,7 +39,7 @@ class Decode64View(TemplateView):
     template_name = 'decode64.html'
 
     def get_context_data(self, **kwargs):
-        ctx = super(Decode64, self).get_context_data(**kwargs)
+        ctx = super(Decode64View, self).get_context_data(**kwargs)
         if self.request.POST and self.request.POST.get('text'):
             if self.request.POST.get('urlsafe'):
                 ctx['decoded'] = base64.urlsafe_b64decode(self.request.POST.get('text'))
