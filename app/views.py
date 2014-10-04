@@ -35,7 +35,7 @@ FLOW = flow_from_clientsecrets(
     ],
     redirect_uri='http://lab.mailburn.com/oauth2callback')
 
-class Decode64(TemplateView):
+class Decode64View(TemplateView):
     template_name = 'decode64.html'
 
     def get_context_data(self, **kwargs):
