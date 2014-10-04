@@ -38,6 +38,9 @@ FLOW = flow_from_clientsecrets(
 class Decode64View(TemplateView):
     template_name = 'decode64.html'
 
+    def post(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         ctx = super(Decode64View, self).get_context_data(**kwargs)
         if self.request.POST and self.request.POST.get('text'):
