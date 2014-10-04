@@ -44,10 +44,11 @@ class Decode64View(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super(Decode64View, self).get_context_data(**kwargs)
         if self.request.POST and self.request.POST.get('text'):
+            s = self.request.POST.get('text').encode('utf-8')
             if self.request.POST.get('urlsafe'):
-                ctx['decoded'] = base64.urlsafe_b64decode(self.request.POST.get('text'))
+                ctx['decoded'] = base64.urlsafe_b64decode(s)
             else:
-                ctx['decoded'] = base64.b64decode(self.request.POST.get('text'))
+                ctx['decoded'] = base64.b64decode(s)
         return ctx
 
 class HomeView(ListView):
