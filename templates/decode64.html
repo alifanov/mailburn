@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="container">
-        {{ decocded }}
+        {{ decoded }}
         <form method="POST">{% csrf_token %}
             <div class="form-group">
                 <input type="checkbox" name="urlsafe" class="form-control" />
