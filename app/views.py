@@ -271,6 +271,7 @@ from email.mime.text import MIMEText
 import time
 import hashlib
 from django.core.cache import cache
+import quopri
 
 class MessageSend(View):
 
@@ -294,7 +295,9 @@ class MessageSend(View):
             n_msg['To'] = msg['To']
             n_msg['From'] = msg['From']
             n_msg['Subject'] = msg['Subject']
-            n = msg.get_payload() + '<img width="1" height="1" src="http://lab.mailburn.com/track.gif?m=mail-{}" />'.format(new_key)
+            n = msg.get_payload()
+            n = quopri.decodestring(n)
+            n = n + '<img width="1" height="1" src="http://lab.mailburn.com/track.gif?m=mail-{}" />'.format(new_key)
             n_text = MIMEText(n, 'html')
             n_text.set_charset('utf-8')
             n_msg.attach(n_text)
