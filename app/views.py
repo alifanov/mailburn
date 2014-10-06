@@ -287,7 +287,7 @@ class MessageSend(View):
         new_key = cache.get('max_value', 1)
         cache.set('max_value', new_key+1)
 
-        msg = base64.b64decode(simplejson.loads(request.body)['raw'])
+        msg = base64.urlsafe_b64decode(simplejson.loads(request.body)['raw'])
         msg = email.message_from_string(msg)
         if msg.get_default_type() == 'text/plain':
             n_msg = MIMEMultipart('alternative')
