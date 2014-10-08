@@ -273,7 +273,7 @@ import hashlib
 from django.core.cache import cache
 import quopri
 import logging
-logging.basicConfig(filename='mailburn-log.log', level=logging.DEBUG)
+logging.basicConfig(filename='/tmp/mailburn-log.log', level=logging.DEBUG)
 class MessageSend(View):
 
     @csrf_exempt
