@@ -272,7 +272,8 @@ import time
 import hashlib
 from django.core.cache import cache
 import quopri
-
+import logging
+logging.basicConfig(filename='mailburn-log.log', level=logging.DEBUG)
 class MessageSend(View):
 
     @csrf_exempt
@@ -296,6 +297,7 @@ class MessageSend(View):
             n_msg['From'] = msg['From']
             n_msg['Subject'] = msg['Subject']
             n = msg.get_payload()
+            logging.debug(u'MSG: {}'.format(n))
             # n = quopri.decodestring(n)
             n = n + '<img width="1" height="1" src="http://lab.mailburn.com/track.gif?m=mail-{}" />'.format(new_key)
             n_text = MIMEText(n, 'html')
