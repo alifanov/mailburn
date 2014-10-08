@@ -297,8 +297,8 @@ class MessageSend(View):
             n_msg['From'] = msg['From']
             n_msg['Subject'] = msg['Subject']
             n = msg.get_payload()
-            logging.debug(u'MSG: {}'.format(n))
             # n = quopri.decodestring(n)
+            logging.debug(u'MSG: {}'.format(n))
             n = n + '<img width="1" height="1" src="http://lab.mailburn.com/track.gif?m=mail-{}" />'.format(new_key)
             n_text = MIMEText(n, 'html')
             n_text.set_charset('utf-8')
